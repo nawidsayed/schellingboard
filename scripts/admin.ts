@@ -13,6 +13,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import * as schema from "../db/schema.js";
 import { resolveDbPath, runMigrations } from "../db/migrate.js";
+import { eventNameToSlug } from "../utils/utils.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -247,6 +248,7 @@ async function createEvent(db: DB): Promise<void> {
     .values({
       id,
       name: name as string,
+      slug: eventNameToSlug(name as string),
       description: (description as string) || "",
       website: (website as string) || "",
       start,
