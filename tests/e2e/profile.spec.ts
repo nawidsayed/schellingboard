@@ -4,8 +4,8 @@ import sharp from "sharp";
 
 async function selectCurrentUser(page: import("@playwright/test").Page) {
   // The proposals page has a "My name is:" selector backed by a combobox.
-  await page.locator("#user-selection").click();
-  await page.locator("#user-selection").fill("Alice Test");
+  await page.getByRole("combobox", { name: /My name is/i }).click();
+  await page.getByRole("combobox", { name: /My name is/i }).fill("Alice Test");
   await page.getByRole("option", { name: /Alice Test/i }).click();
   await page.keyboard.press("Escape");
 }
