@@ -50,6 +50,34 @@ export function useTableParams() {
   return { searchParams, setParams };
 }
 
+type TableProps<T> = {
+  rows: T[];
+  rowKey: (row: T) => string;
+  total: number;
+  page: number;
+  pageSize: number;
+  searchQuery: string;
+  searchPlaceholder?: string;
+  toolbar?: ReactNode;
+  bulkBar?: ReactNode;
+  emptyMessage?: string;
+} & (
+  | {
+      columns: Column<T>[];
+      selection?: Selection<T>;
+      mobileCard: (row: T) => ReactNode;
+      listItem?: undefined;
+    }
+  | {
+      // List mode: each row renders as a rich list item on every viewport
+      // (for rows that don't fit a column layout, e.g. inline edit forms).
+      columns?: undefined;
+      selection?: undefined;
+      mobileCard?: undefined;
+      listItem: (row: T) => ReactNode;
+    }
+);
+
 export function DataTable<T>({
   rows,
   columns,
@@ -63,22 +91,9 @@ export function DataTable<T>({
   bulkBar,
   selection,
   mobileCard,
+  listItem,
   emptyMessage = "Nothing to show.",
-}: {
-  rows: T[];
-  columns: Column<T>[];
-  rowKey: (row: T) => string;
-  total: number;
-  page: number;
-  pageSize: number;
-  searchQuery: string;
-  searchPlaceholder?: string;
-  toolbar?: ReactNode;
-  bulkBar?: ReactNode;
-  selection?: Selection<T>;
-  mobileCard: (row: T) => ReactNode;
-  emptyMessage?: string;
-}) {
+}: TableProps<T>) {
   const { setParams } = useTableParams();
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
 
@@ -130,6 +145,14 @@ export function DataTable<T>({
 
       {rows.length === 0 ? (
         <p className="text-sm text-gray-500">{emptyMessage}</p>
+      ) : listItem ? (
+        <ul className="divide-y divide-gray-200 border-t border-b border-gray-200">
+          {rows.map((row) => (
+            <li key={rowKey(row)} className="py-3">
+              {listItem(row)}
+            </li>
+          ))}
+        </ul>
       ) : (
         <>
           {/* Desktop: a table. */}
