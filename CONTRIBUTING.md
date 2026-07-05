@@ -204,7 +204,7 @@ Each E2E run starts from a clean database with 3 events (Alpha/Beta/Gamma) in di
 
 - Use conventional commits (`feat:`, `fix:`, `docs:`, `refactor:`, etc.)
 - Subject line ≤ 72 chars; explain WHY in the body if not obvious
-- Before committing, run `bun lint`, `bun format`, and `bun typecheck`
+- Before committing, run `make lint`, `make format`, and `make typecheck`
 - When working on a GitHub issue, add a footer: `issue #123` (partial work) or `fixes #123` (fully resolves it)
 
 ## Pull Requests
