@@ -21,7 +21,8 @@
 
 ### Prerequisites
 
-- Node.js / Bun
+- **Bun** (package manager and script runner)
+- **Node.js 24**, installed and on your `PATH`. Although Bun runs the app, the tooling shells out to a real `node` — `bun x tsx` for migrations/scripts, and Vitest's test workers — so `node` must be directly on your `PATH`. Check with `node -v`.
 
 ### Setup
 
